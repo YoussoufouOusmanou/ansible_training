@@ -1,0 +1,17 @@
+- name: httpd install play
+  hosts: all
+  tasks:
+  - name: docker image
+    docker_image:
+         name: httpd
+         tag: latest
+         source: pull
+  - name: Lunch httpd container
+    docker_container:
+          name: httpd
+          image: httpd
+          state: started
+          exposed_port:
+          - "80"
+          ports:
+          - "80:80"

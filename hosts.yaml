@@ -1,13 +1,13 @@
 all:
   vars:
-    ansible_login=admin
-
-pod:
+    ansible_user: admin
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+prod:
   hosts:
-    10.0.0.4
-
+    client: 
+      ansible_host: 10.0.0.4
   vars:
-    ansible_password: "admin"
-    env: "production"
+    ansible_password: admin
+    env: production
 
 
