@@ -15,24 +15,24 @@
     - name: install docker python
       pip: name=docker-py
   tasks:
-   - name: install yum and git
-     yum:
+  - name: install yum and git
+    yum:
       name: '{{item}}'
       state: present
-     when:
-      - ansible_facts['distribution'] == "CentOS"
-     loop:
+    loop:
       - git
       - wget
-   - name: create httpd container
-     docker_container:
+    when:
+      - ansible_facts['distribution'] == "CentOS"
+  - name: create httpd container
+    docker_container:
         name: webapp
         image: httpd
         ports:
          - "80:80"
         volumes:
-         - /home/admin/index.html:/usr/local/apache2/htdocs/index.html
-   - name: Copie template to httpd
-     template:
-      src: index.html.j2
-      dest: /home/admin/index.html
+         - /home/admin/templates/:/usr/local/apache2/htdocs/index.html
+  - name: Copie template to httpd
+    copy:
+      src: ./templates/
+      dest: /home/admin/templates
