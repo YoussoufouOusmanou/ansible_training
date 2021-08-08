@@ -14,20 +14,21 @@
       changed_when: false
     - name: install docker python
       pip: name=docker-py
-    - name: Copie template to client
+    - name: install yum and git
+      yum:
+       name: '{{item}}'
+       state: present
+      when:
+      - ansible_facts['distribution'] == "CentOS"
+      loop:
+        - git
+        - wget
+  tasks:
+ 
+   - name: Copie template to client
       template:
         src: index.html.j2
         dest: /home/admin/index.html
-  tasks:
-   - name: install yum and git
-     yum:
-      name: '{{item}}'
-      state: present
-     when:
-      - ansible_facts['distribution'] == "CentOS"
-     loop:
-      - git
-      - wget
    - name: create httpd container
      docker_container:
         name: webapp
