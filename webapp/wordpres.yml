@@ -1,0 +1,16 @@
+---
+
+- hosts: prod
+  become: true
+  vars: 
+    system_user: admin
+  vars_files:
+    - files/secrets/credentials.vault
+  pre_tasks:
+    - name: create www-data
+      user: name=www-data state=present
+  roles:
+    - {role: ansible-role-containerized-wordpress }
+
+#ansible-galaxy install -r roles/requirements.yml
+#ansible-playbook -i prod.yml --ask-vault-pass wordpres.yml
